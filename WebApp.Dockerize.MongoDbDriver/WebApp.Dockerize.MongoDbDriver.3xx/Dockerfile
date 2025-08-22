@@ -1,5 +1,5 @@
 # Use the official .NET 8 SDK image for building
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
 # Copy csproj and restore dependencies
@@ -15,7 +15,7 @@ FROM build AS publish
 RUN dotnet publish "WebApp.Dockerize.MongoDbDriver.3xx.csproj" -c Release -o /app/publish
 
 # Use the official .NET 8 runtime image for final stage
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
 
 # Create a non-root user

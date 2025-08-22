@@ -12,7 +12,9 @@ builder.Services.ConfigureOptions<ConfigureMongoDbOptions>();
 builder.Services.AddSingleton<IMongoClient>(provider =>
 {
     var options = provider.GetRequiredService<IOptions<MongoDbOptions>>();
-    return new MongoClient(options.Value.ConnectionString);
+    var settings = MongoClientSettings.FromConnectionString(options.Value.ConnectionString);
+    settings.ConnectTimeout = TimeSpan.FromSeconds(5);
+    return new MongoClient(settings);
 });
 
 var app = builder.Build();

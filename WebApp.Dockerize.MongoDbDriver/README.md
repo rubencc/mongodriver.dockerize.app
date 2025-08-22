@@ -1,15 +1,19 @@
 # MongoDB Driver Dockerized Application
 
-Esta aplicación .NET 8 Web API con MongoDB está completamente dockerizada y lista para usar.
+Esta aplicación .NET 8 Web API con MongoDB está completamente dockerizada y configurada con MongoDB Replica Set.
 
 ## Requisitos Previos
 
 - Docker Desktop instalado
 - Docker Compose disponible
 
+## Configuración de MongoDB Replica Set
+
+La aplicación utiliza MongoDB configurado como replica set (`rs0`) para alta disponibilidad y funcionalidades avanzadas como transacciones.
+
 ## Instrucciones de Uso
 
-### Opción 1: Ejecutar con Docker Compose (Recomendado)
+### Ejecutar con Docker Compose
 
 ```bash
 # Desde el directorio raíz del proyecto
@@ -18,50 +22,49 @@ docker-compose up --build
 ```
 
 Esto iniciará:
-- La aplicación .NET en el puerto 8080
-- MongoDB en el puerto 27017
+- **MongoDB** en modo replica set (`rs0`) en el puerto 27017
+- **Servicio de inicialización** que configura automáticamente el replica set
+- **webapp230** en el puerto 8080
+- **webapp343** en el puerto 8081
 
-### Opción 2: Ejecutar solo la aplicación (requiere MongoDB externo)
+### Proceso de Inicialización
 
-```bash
-# Construir la imagen
-cd WebApp.Dockerize.MongoDbDriver.230
-docker build -t webapp-mongodriver .
-
-# Ejecutar el contenedor
-docker run -p 8080:8080 webapp-mongodriver
-```
+1. MongoDB se inicia con `--replSet rs0`
+2. El servicio `mongo-init` ejecuta el script de inicialización
+3. Se configura el replica set con un solo miembro
+4. Las aplicaciones se conectan al replica set una vez inicializado
 
 ## URLs de Acceso
 
-Una vez que los contenedores estén ejecutándose:
+- **webapp230 API**: http://localhost:8080
+- **webapp230 Swagger**: http://localhost:8080/swagger
+- **webapp343 API**: http://localhost:8081
+- **webapp343 Swagger**: http://localhost:8081/swagger
+- **MongoDB Replica Set**: mongodb://localhost:27017/test?replicaSet=rs0
 
-- **API**: http://localhost:8080
-- **Swagger UI**: http://localhost:8080/swagger
-- **MongoDB**: mongodb://localhost:27017
+## Configuración de Conexión
+
+Las aplicaciones están configuradas con:
+- **Connection String**: `mongodb://mongodb:27017/test?replicaSet=rs0`
+- **Read Preference**: PrimaryPreferred
+- **Timeouts**: 30 segundos para conexión y selección de servidor
+- **Write Concern**: W1 (escritura confirmada en primario)
 
 ## Endpoints Disponibles
 
 - `GET /api/test` - Verificar conectividad con MongoDB
 - `GET /api/test/databases` - Listar bases de datos disponibles
 
-## Variables de Entorno
+## Ventajas del Replica Set
 
-La aplicación utiliza las siguientes variables de entorno:
-
-- `ConnectionStrings__MongoDB`: Cadena de conexión a MongoDB
-- `ASPNETCORE_ENVIRONMENT`: Entorno de ejecución (Development/Production)
+- **Transacciones**: Soporte completo para transacciones ACID
+- **Alta disponibilidad**: Preparado para múltiples nodos
+- **Consistencia**: Control granular de lectura/escritura
+- **Oplog**: Registro de cambios para replicación
 
 ## Desarrollo Local
 
 Para desarrollo sin Docker:
-
-1. Asegúrate de tener MongoDB ejecutándose localmente
-2. Ejecuta `dotnet run` desde el directorio del proyecto
-3. La aplicación estará disponible en http://localhost:5000
-
-## Estructura de Docker
-
-- **Dockerfile**: Multi-stage build optimizado para producción
-- **docker-compose.yml**: Orquestación de servicios con MongoDB
-- **.dockerignore**: Exclusiones para optimizar el build
+1. Instala MongoDB localmente
+2. Configura un replica set local: `rs.initiate()`
+3. Actualiza la connection string en `appsettings.json`

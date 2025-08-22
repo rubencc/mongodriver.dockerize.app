@@ -23,7 +23,9 @@ public class TestController : ControllerBase
     public async Task<IActionResult> TestConnection()
     {
         var values = new Dictionary<string, string>();
-            
+           
+        values.Add("TargetFramework", AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName);
+        values.Add("Environment", Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
         values.Add("ConnectionStringOnSettings", _options.Value.ConnectionString);
         values.Add("ConnectionStringOnDriver", _mongoClient.Settings.Server.ToString());
         values.Add("EndPoint", _mongoClient.Cluster.Description.Servers.First().EndPoint.ToString());
