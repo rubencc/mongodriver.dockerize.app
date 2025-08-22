@@ -1,0 +1,41 @@
+# This is a generated file. Not intended for manual editing.
+version: "3.8"
+services:
+  webapp230:
+    build:
+      context: "C:\\WK_SourceCode\\mongodriver.dockerize.app\\WebApp.Dockerize.MongoDbDriver\\\
+        WebApp.Dockerize.MongoDbDriver.230"
+      dockerfile: "Dockerfile"
+      target: "build"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/WebApp.Dockerize.MongoDbDriver.230.dll"
+    environment: {}
+    image: "webapp.dockerize.mongodbdriver.230:dev"
+    ports: []
+    volumes:
+    - "C:\\WK_SourceCode\\mongodriver.dockerize.app\\WebApp.Dockerize.MongoDbDriver\\\
+      WebApp.Dockerize.MongoDbDriver.230:/app:rw"
+    - "C:\\WK_SourceCode\\mongodriver.dockerize.app\\WebApp.Dockerize.MongoDbDriver:/src:rw"
+    - "C:\\Users\\ruben.carretero\\.nuget\\packages:/root/.nuget/packages"
+    working_dir: "/app"
+  webapp343:
+    build:
+      context: "C:\\WK_SourceCode\\mongodriver.dockerize.app\\WebApp.Dockerize.MongoDbDriver\\\
+        WebApp.Dockerize.MongoDbDriver.3xx"
+      dockerfile: "Dockerfile"
+      target: "build"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/WebApp.Dockerize.MongoDbDriver.3xx.dll"
+    environment: {}
+    image: "webapp.dockerize.mongodbdriver.3xx:dev"
+    ports: []
+    volumes:
+    - "C:\\WK_SourceCode\\mongodriver.dockerize.app\\WebApp.Dockerize.MongoDbDriver\\\
+      WebApp.Dockerize.MongoDbDriver.3xx:/app:rw"
+    - "C:\\WK_SourceCode\\mongodriver.dockerize.app\\WebApp.Dockerize.MongoDbDriver:/src:rw"
+    - "C:\\Users\\ruben.carretero\\.nuget\\packages:/root/.nuget/packages"
+    working_dir: "/app"
