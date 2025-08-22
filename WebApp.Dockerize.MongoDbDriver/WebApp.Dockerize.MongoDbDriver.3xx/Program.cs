@@ -14,6 +14,7 @@ builder.Services.AddSingleton<IMongoClient>(provider =>
     var options = provider.GetRequiredService<IOptions<MongoDbOptions>>();
     var settings = MongoClientSettings.FromConnectionString(options.Value.ConnectionString);
     settings.ConnectTimeout = TimeSpan.FromSeconds(5);
+    settings.ApplicationName = "Dockerize.MongoDbDriver.3xx";
     return new MongoClient(settings);
 });
 
