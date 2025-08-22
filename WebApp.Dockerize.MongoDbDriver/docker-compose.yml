@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  webapp230:
+    build:
+      context: ./WebApp.Dockerize.MongoDbDriver.230
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - MongoDb__ConnectionString=mongodb://mongodb:27017/
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+  
+  webapp343:
+    build:
+      context: ./WebApp.Dockerize.MongoDbDriver.3xx
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - MongoDb__ConnectionString=mongodb://mongodb:27017/
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+
+  mongodb:
+    image: mongo:8.0.12
+    container_name: mongodbTestDriver
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: test
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - app-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  app-network:
+    driver: bridge
